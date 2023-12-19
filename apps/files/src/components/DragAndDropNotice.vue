@@ -218,7 +218,7 @@ export default defineComponent({
 	border-color: black;
 
 	h3 {
-		margin-left: 16px;
+		margin-inline-start: 16px;
 		color: inherit;
 	}
 

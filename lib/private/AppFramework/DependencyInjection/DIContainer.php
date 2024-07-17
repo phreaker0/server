@@ -289,6 +289,9 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 				)
 			);
 			$dispatcher->registerMiddleware(
+				new OC\AppFramework\Middleware\RequestTimeMiddleware()
+			);
+			$dispatcher->registerMiddleware(
 				$c->get(\OC\AppFramework\Middleware\AdditionalScriptsMiddleware::class)
 			);
 

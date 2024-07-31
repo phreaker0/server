@@ -1329,7 +1329,7 @@ class QueryBuilder implements IQueryBuilder {
 	 * @param string $table
 	 * @return string
 	 */
-	public function prefixTableName($table) {
+	public function prefixTableName(string $table): string {
 		if ($this->automaticTablePrefix === false || str_starts_with($table, '*PREFIX*')) {
 			return $table;
 		}
@@ -1365,4 +1365,14 @@ class QueryBuilder implements IQueryBuilder {
 
 		return $this->helper->quoteColumnName($alias);
 	}
+
+	public function hintShardKey(string $column, mixed $value) {
+		return $this;
+	}
+
+	public function runAcrossAllShards() {
+		// noop
+		return $this;
+	}
+
 }

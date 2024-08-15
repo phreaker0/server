@@ -4,30 +4,27 @@
 -->
 
 <template>
-	<div class="template-field__text">
+	<div class="template-field__checkbox">
 		<label :for="fieldId">
 			{{ fieldLabel }}
 		</label>
 
-		<NcTextField :id="fieldId"
-			type="text"
-			:value.sync="value"
-			:label="fieldLabel"
-			:label-outside="true"
-			:placeholder="field.content"
-			@input="$emit('input', [value, field.index])" />
+		<NcCheckboxRadioSwitch :id="fieldId"
+			:checked.sync="value"
+			type="switch"
+			@update:checked="$emit('input', [field.index, 'checked', value])" />
 	</div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { NcTextField } from '@nextcloud/vue'
+import { NcCheckboxRadioSwitch } from '@nextcloud/vue'
 
 export default defineComponent({
-	name: 'TemplateTextField',
+	name: 'TemplateCheckboxField',
 
 	components: {
-		NcTextField,
+		NcCheckboxRadioSwitch,
 	},
 
 	props: {
@@ -39,7 +36,7 @@ export default defineComponent({
 
 	data() {
 		return {
-			value: '',
+			value: this.field.checked ?? false,
 		}
 	},
 
@@ -47,21 +44,24 @@ export default defineComponent({
 		fieldLabel() {
 			const label = this.field.name ?? this.field.alias ?? 'Unknown field'
 
-			return (label.charAt(0).toUpperCase() + label.slice(1))
+			return label.charAt(0).toUpperCase() + label.slice(1)
 		},
 		fieldId() {
-			return 'text-field' + this.field.index
+			return 'checkbox-field' + this.field.index
 		},
 	},
 })
 </script>
 
 <style lang="scss" scoped>
-.template-field__text {
-	margin: 20px 0;
+.template-field__checkbox {
+  margin: 20px 0;
+  display: flex;
+  align-items: center;
 
-	label {
-		font-weight: bold;
-	}
+  label {
+    font-weight: bold;
+    flex-grow: 1;
+  }
 }
 </style>

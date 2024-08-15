@@ -13,36 +13,39 @@ namespace OCP\Files\Template;
  * @since 30.0.0
  */
 class Field implements \JsonSerializable {
-	private string $index;
-	private string $content;
-	private FieldType $type;
-	private ?string $alias;
-	private ?int $id;
-	private ?string $tag;
+	public ?string $content = null;
+	public ?string $alias = null;
+	public ?string $tag = null;
+	public ?int $id = null;
+	public ?bool $checked = null;
 
 	/**
 	 * @since 30.0.0
 	 */
-	public function __construct(string $index, string $content, FieldType $type, ?string $alias = null, ?int $id = null, ?string $tag = null) {
-		$this->index = $index;
-		$this->alias = $alias;
-		$this->type = $type;
-		$this->id = $id;
-		$this->tag = $tag;
-		$this->content = $content;
+	public function __construct(
+		private string $index,
+		private FieldType $type
+	) {
 	}
 
 	/**
 	 * @since 30.0.0
 	 */
 	public function jsonSerialize(): array {
-		return [
-			"index" => $this->index,
-			"content" => $this->content,
-			"type" => $this->type->value,
-			"alias" => $this->alias,
-			"id" => $this->id,
-			"tag" => $this->tag,
-		];
+		$jsonProperties = [];
+
+		foreach (get_object_vars($this) as $propertyName => $propertyValue) {
+			if (is_null($propertyValue)) {
+				continue;
+			}
+
+			if ($propertyValue instanceof FieldType) {
+				$propertyValue = $propertyValue->value;
+			}
+
+			array_push($jsonProperties, [$propertyName => $propertyValue]);
+		}
+		
+		return array_merge([], ...$jsonProperties);
 	}
 }

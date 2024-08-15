@@ -1366,7 +1366,7 @@ class QueryBuilder implements IQueryBuilder {
 		return $this->helper->quoteColumnName($alias);
 	}
 
-	public function hintShardKey(string $column, mixed $value) {
+	public function hintShardKey(string $column, mixed $value, bool $overwrite = false) {
 		return $this;
 	}
 

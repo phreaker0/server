@@ -14,6 +14,7 @@ use OCP\ILogger;
 use OCP\Log\IDataLogger;
 use Psr\Log\InvalidArgumentException;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 use Throwable;
 use function array_key_exists;
 use function array_merge;
@@ -22,6 +23,20 @@ final class PsrLoggerAdapter implements LoggerInterface, IDataLogger {
 	public function __construct(
 		private Log $logger,
 	) {
+	}
+
+	public static function logLevelToInt(string $level): int {
+		return match ($level) {
+			LogLevel::ALERT => ILogger::ERROR,
+			LogLevel::CRITICAL => ILogger::ERROR,
+			LogLevel::DEBUG => ILogger::DEBUG,
+			LogLevel::EMERGENCY => ILogger::FATAL,
+			LogLevel::ERROR => ILogger::ERROR,
+			LogLevel::INFO => ILogger::INFO,
+			LogLevel::NOTICE => ILogger::INFO,
+			LogLevel::WARNING => ILogger::WARN,
+			default => throw new InvalidArgumentException('Unsupported custom log level'),
+		};
 	}
 
 	public function setEventDispatcher(IEventDispatcher $eventDispatcher): void {
@@ -213,8 +228,11 @@ final class PsrLoggerAdapter implements LoggerInterface, IDataLogger {
 	 * @throws InvalidArgumentException
 	 */
 	public function log($level, $message, array $context = []): void {
+		if (is_string($level)) {
+			$level = self::logLevelToInt($level);
+		}
 		if (!is_int($level) || $level < ILogger::DEBUG || $level > ILogger::FATAL) {
-			throw new InvalidArgumentException('Nextcloud allows only integer log levels');
+			throw new InvalidArgumentException('Unsupported custom log level');
 		}
 		if ($this->containsThrowable($context)) {
 			$this->logger->logException($context['exception'], array_merge(

@@ -9,6 +9,7 @@
 namespace Test\AppFramework\Db;
 
 use OCP\AppFramework\Db\Entity;
+use OCP\DB\Types;
 use PHPUnit\Framework\Constraint\IsType;
 
 /**
@@ -30,6 +31,10 @@ use PHPUnit\Framework\Constraint\IsType;
  * @method void setAnotherBool(bool $anotherBool)
  * @method string getLongText()
  * @method void setLongText(string $longText)
+ * @method \DateTime getTime()
+ * @method void setTime(\DateTime $time)
+ * @method \DateTimeImmutable getDatetime()
+ * @method void setDatetime(\DateTimeImmutable $datetime)
  */
 class TestEntity extends Entity {
 	protected $name;
@@ -39,12 +44,16 @@ class TestEntity extends Entity {
 	protected $trueOrFalse;
 	protected $anotherBool;
 	protected $longText;
+	protected $time;
+	protected $datetime;
 
 	public function __construct($name = null) {
-		$this->addType('testId', 'integer');
+		$this->addType('testId', Types::INTEGER);
 		$this->addType('trueOrFalse', 'bool');
-		$this->addType('anotherBool', 'boolean');
-		$this->addType('longText', 'blob');
+		$this->addType('anotherBool', Types::BOOLEAN);
+		$this->addType('longText', Types::BLOB);
+		$this->addType('time', Types::TIME);
+		$this->addType('datetime', Types::DATETIME_IMMUTABLE);
 		$this->name = $name;
 	}
 }
@@ -211,15 +220,34 @@ class EntityTest extends \Test\TestCase {
 		$this->assertSame($string, $entity->getLongText());
 	}
 
+	public function testSetterConvertsDatetime() {
+		$entity = new TestEntity();
+		$entity->setDatetime('2024-08-19 15:26:00');
+		$this->assertEquals(new \DateTimeImmutable('2024-08-19 15:26:00'), $entity->getDatetime());
+	}
+
+	public function testSetterDoesNotConvertNullOnDatetime() {
+		$entity = new TestEntity();
+		$entity->setDatetime(null);
+		$this->assertNull($entity->getDatetime());
+	}
+
+	public function testSetterConvertsTime() {
+		$entity = new TestEntity();
+		$entity->setTime('15:26:00');
+		$this->assertEquals(new \DateTime('15:26:00'), $entity->getTime());
+	}
 
 	public function testGetFieldTypes() {
 		$entity = new TestEntity();
 		$this->assertEquals([
-			'id' => 'integer',
-			'testId' => 'integer',
+			'id' => Types::INTEGER,
+			'testId' => Types::INTEGER,
 			'trueOrFalse' => 'bool',
-			'anotherBool' => 'boolean',
-			'longText' => 'blob',
+			'anotherBool' => Types::BOOLEAN,
+			'longText' => Types::BLOB,
+			'time' => Types::TIME,
+			'datetime' => Types::DATETIME_IMMUTABLE,
 		], $entity->getFieldTypes());
 	}
 
@@ -227,7 +255,7 @@ class EntityTest extends \Test\TestCase {
 	public function testGetItInt() {
 		$entity = new TestEntity();
 		$entity->setId(3);
-		$this->assertEquals('integer', gettype($entity->getId()));
+		$this->assertEquals(Types::INTEGER, gettype($entity->getId()));
 	}
 
 

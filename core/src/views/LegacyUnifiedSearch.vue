@@ -762,8 +762,8 @@ $input-padding: 10px;
 
 		// Loading spinner
 		&::after {
-			right: $input-padding;
-			left: auto;
+		inset-inline-end: $input-padding;
+		inset-inline-start: auto;
 		}
 
 		&-input,
@@ -796,7 +796,7 @@ $input-padding: 10px;
 		&-reset, &-submit {
 			position: absolute;
 			top: 0;
-			right: 4px;
+			inset-inline-end: 4px;
 			width: $input-height - $input-padding;
 			height: $input-height - $input-padding;
 			min-height: 30px;
@@ -814,7 +814,7 @@ $input-padding: 10px;
 		}
 
 		&-submit {
-			right: 28px;
+			inset-inline-end: 28px;
 		}
 	}
 

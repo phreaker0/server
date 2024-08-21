@@ -220,7 +220,7 @@ class DefaultShareProvider implements IShareProviderWithNotification, IShareProv
 				->set('attributes', $qb->createNamedParameter($shareAttributes))
 				->set('item_source', $qb->createNamedParameter($share->getNode()->getId()))
 				->set('file_source', $qb->createNamedParameter($share->getNode()->getId()))
-				->set('expiration', $qb->createNamedParameter($expirationDate, IQueryBuilder::PARAM_DATETIME))
+				->set('expiration', $qb->createNamedParameter($expirationDate, IQueryBuilder::PARAM_DATETIME_MUTABLE))
 				->set('note', $qb->createNamedParameter($share->getNote()))
 				->set('accepted', $qb->createNamedParameter($share->getStatus()))
 				->execute();
@@ -234,7 +234,7 @@ class DefaultShareProvider implements IShareProviderWithNotification, IShareProv
 				->set('attributes', $qb->createNamedParameter($shareAttributes))
 				->set('item_source', $qb->createNamedParameter($share->getNode()->getId()))
 				->set('file_source', $qb->createNamedParameter($share->getNode()->getId()))
-				->set('expiration', $qb->createNamedParameter($expirationDate, IQueryBuilder::PARAM_DATETIME))
+				->set('expiration', $qb->createNamedParameter($expirationDate, IQueryBuilder::PARAM_DATETIME_MUTABLE))
 				->set('note', $qb->createNamedParameter($share->getNote()))
 				->execute();
 
@@ -249,7 +249,7 @@ class DefaultShareProvider implements IShareProviderWithNotification, IShareProv
 				->set('uid_initiator', $qb->createNamedParameter($share->getSharedBy()))
 				->set('item_source', $qb->createNamedParameter($share->getNode()->getId()))
 				->set('file_source', $qb->createNamedParameter($share->getNode()->getId()))
-				->set('expiration', $qb->createNamedParameter($expirationDate, IQueryBuilder::PARAM_DATETIME))
+				->set('expiration', $qb->createNamedParameter($expirationDate, IQueryBuilder::PARAM_DATETIME_MUTABLE))
 				->set('note', $qb->createNamedParameter($share->getNote()))
 				->execute();
 
@@ -276,7 +276,7 @@ class DefaultShareProvider implements IShareProviderWithNotification, IShareProv
 				->set('item_source', $qb->createNamedParameter($share->getNode()->getId()))
 				->set('file_source', $qb->createNamedParameter($share->getNode()->getId()))
 				->set('token', $qb->createNamedParameter($share->getToken()))
-				->set('expiration', $qb->createNamedParameter($expirationDate, IQueryBuilder::PARAM_DATETIME))
+				->set('expiration', $qb->createNamedParameter($expirationDate, IQueryBuilder::PARAM_DATETIME_MUTABLE))
 				->set('note', $qb->createNamedParameter($share->getNote()))
 				->set('label', $qb->createNamedParameter($share->getLabel()))
 				->set('hide_download', $qb->createNamedParameter($share->getHideDownload() ? 1 : 0), IQueryBuilder::PARAM_INT)

@@ -508,11 +508,6 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase {
 	}
 
 	protected function IsDatabaseAccessAllowed() {
-		// on CI we allow database access in any case - otherwise
-		// this will break all apps right away
-		if (getenv('CI') == true) {
-			return true;
-		}
 		$annotations = $this->getGroupAnnotations();
 		if (isset($annotations)) {
 			if (in_array('DB', $annotations) || in_array('SLOWDB', $annotations)) {

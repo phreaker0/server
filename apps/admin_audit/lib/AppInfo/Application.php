@@ -23,6 +23,7 @@ use OCA\AdminAudit\Actions\Versions;
 use OCA\AdminAudit\AuditLogger;
 use OCA\AdminAudit\IAuditLogger;
 use OCA\AdminAudit\Listener\CriticalActionPerformedEventListener;
+use OCA\AdminAudit\Listener\UserChangedEventListener;
 use OCP\App\ManagerEvent;
 use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
@@ -47,6 +48,7 @@ use OCP\Log\Audit\CriticalActionPerformedEvent;
 use OCP\Log\ILogFactory;
 use OCP\Preview\BeforePreviewFetchedEvent;
 use OCP\Share;
+use OCP\User\Events\UserChangedEvent;
 use OCP\Util;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
@@ -65,6 +67,7 @@ class Application extends App implements IBootstrap {
 		});
 
 		$context->registerEventListener(CriticalActionPerformedEvent::class, CriticalActionPerformedEventListener::class);
+		$context->registerEventListener(UserChangedEvent::class, UserChangedEventListener::class);
 	}
 
 	public function boot(IBootContext $context): void {
@@ -109,7 +112,6 @@ class Application extends App implements IBootstrap {
 
 		Util::connectHook('OC_User', 'post_createUser', $userActions, 'create');
 		Util::connectHook('OC_User', 'post_deleteUser', $userActions, 'delete');
-		Util::connectHook('OC_User', 'changeUser', $userActions, 'change');
 
 		assert($userSession instanceof UserSession);
 		$userSession->listen('\OC\User', 'postSetPassword', [$userActions, 'setPassword']);

@@ -72,36 +72,6 @@ class UserManagement extends Action {
 	}
 
 	/**
-	 * Log enabling of users
-	 *
-	 * @param array $params
-	 */
-	public function change(array $params): void {
-		switch ($params['feature']) {
-			case 'enabled':
-				$this->log(
-					$params['value'] === true
-						? 'User enabled: "%s"'
-						: 'User disabled: "%s"',
-					['user' => $params['user']->getUID()],
-					[
-						'user',
-					]
-				);
-				break;
-			case 'eMailAddress':
-				$this->log(
-					'Email address changed for user %s',
-					['user' => $params['user']->getUID()],
-					[
-						'user',
-					]
-				);
-				break;
-		}
-	}
-
-	/**
 	 * Logs changing of the user scope
 	 *
 	 * @param IUser $user

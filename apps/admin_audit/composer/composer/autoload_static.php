@@ -39,6 +39,7 @@ class ComposerStaticInitAdminAudit
         'OCA\\AdminAudit\\BackgroundJobs\\Rotate' => __DIR__ . '/..' . '/../lib/BackgroundJobs/Rotate.php',
         'OCA\\AdminAudit\\IAuditLogger' => __DIR__ . '/..' . '/../lib/IAuditLogger.php',
         'OCA\\AdminAudit\\Listener\\CriticalActionPerformedEventListener' => __DIR__ . '/..' . '/../lib/Listener/CriticalActionPerformedEventListener.php',
+        'OCA\\AdminAudit\\Listener\\UserChangedEventListener' => __DIR__ . '/..' . '/../lib/Listener/UserChangedEventListener.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

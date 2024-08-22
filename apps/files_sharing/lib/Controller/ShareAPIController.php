@@ -158,6 +158,17 @@ class ShareAPIController extends OCSController {
 		if ($isOwnShare) {
 			$result['item_permissions'] = $node->getPermissions();
 		}
+		
+		// Fix permissions if needed
+		// For some reason, single files share are forbidden to have the delete permission
+		// since we have custom methods to check those, let's adjust straight away.
+		// DAV permissions does not have that issue though.
+		if ($this->canDeleteShare($share)) {
+			$result['permissions'] |= Constants::PERMISSION_DELETE;
+		}
+		if ($this->canEditShare($share)) {
+			$result['permissions'] |= Constants::PERMISSION_UPDATE;
+		}
 
 		// See MOUNT_ROOT_PROPERTYNAME dav property
 		$result['is-mount-root'] = $node->getInternalPath() === '';
